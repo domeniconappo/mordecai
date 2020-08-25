@@ -1,3 +1,5 @@
+import logging
+
 from tensorflow import keras
 import pandas as pd
 import numpy as np
@@ -11,9 +13,7 @@ from elasticsearch.exceptions import ConnectionTimeout, ConnectionError
 import multiprocessing
 from tqdm import tqdm
 import warnings
-import re
 
-import traceback
 
 try:
     from functools import lru_cache
@@ -21,6 +21,8 @@ except ImportError:
     from backports.functools_lru_cache import lru_cache
     print("Mordecai requires Python 3 and seems to be running in Python 2.")
 
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('MORDECAI')
 
 class Geoparser:
     def __init__(self, nlp=None, es_hosts=None, es_port=None, es_ssl=False, es_auth=None,
@@ -728,7 +730,8 @@ https://github.com/openeventdata/mordecai/ for instructions on updating.""".form
                     labels = np.asarray(labels)[ranks]
                     prediction = prediction[ranks]
                 except ValueError:
-                    print(traceback.print_exc())
+                    # print(traceback.print_exc())
+                    logger.debug(str(doc))
                     prediction = np.array([0])
                     labels = np.array([""])
 

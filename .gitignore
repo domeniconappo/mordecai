@@ -11,3 +11,4 @@ mordecai/.cache
 build/
 dist/
 mordecai.egg-info
+.idea
